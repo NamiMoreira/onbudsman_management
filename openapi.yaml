@@ -1,0 +1,94 @@
+openapi: 3.0.3
+info:
+  title: Onbudman - Management 
+  description: |-
+    Api para controlar e gerenciar as rotas dentro de um sistema de gestão de ocorrencias de ouvidoria em uma empresa de Saúde.
+  contact:
+    email: moreira.naomiii@gmail.com
+  version: v1.00
+servers:
+  - url: http://192.168.30.26
+    description: Api alocada localmente
+
+paths:
+  /user:
+    post:
+      tags:
+        - Usuarios
+      summary: Criar novo usuário
+      description: Criar um usuario no banco de dados.
+      requestBody:
+        description: Criar um usuario no banco de dados.
+        content:
+          aplication/json:
+            schema:
+                $ref: "#/components/schemas/user"
+
+              
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/user"
+
+       
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  logError: 
+                    type: string
+                  status: 
+                    type: string
+                  error:
+                    type: string
+            
+        '401':
+          description: Acesso não autorizado
+      security: 
+      - bearerAuth: []
+
+
+
+components:
+  schemas:
+    user: 
+      type: object
+      properties: 
+        email:
+          type: string
+        password:
+          type: string
+        role: 
+          type: number
+        name: 
+          type: string
+          
+  requestBodies:
+    user:
+      description: Pet object that needs to be added to the store
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id: 
+                type: string
+              name: 
+                type: string
+              email:
+                type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      
+            
+
