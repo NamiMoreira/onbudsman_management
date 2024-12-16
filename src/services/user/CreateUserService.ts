@@ -8,7 +8,6 @@ interface UserRequest {
   email: string;
   password: string;
   role: number;
-  username: string;
 }
 
 class CreateUserService {

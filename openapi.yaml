@@ -18,7 +18,7 @@ paths:
       summary: Criar novo usuário
       description: Criar um usuario no banco de dados.
       requestBody:
-        description: Criar um usuario no banco de dados.
+        description: Parametros para criação de um novo usuário.
         content:
           aplication/json:
             schema:
@@ -32,7 +32,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/user"
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  email:
+                    type: string
 
        
         '400':
@@ -42,10 +49,10 @@ paths:
               schema:
                 type: object
                 properties:
-                  logError: 
-                    type: string
-                  status: 
-                    type: string
+                  logError:
+                    type: boolean
+                  status:
+                    type: number
                   error:
                     type: string
             
@@ -53,8 +60,48 @@ paths:
           description: Acesso não autorizado
       security: 
       - bearerAuth: []
-
-
+      
+  /session:
+    post:
+      tags: 
+        - Usuarios
+      summary: Geração de Token   
+      description: Gerar novo token de acesso para usuário através de autenticação.
+      requestBody:
+        description: Usuario e senha para autenticação.
+        content: 
+          application/json:
+            schema:
+              $ref: "#/components/schemas/userAuth"
+        
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  token:
+                    type: string
+        '401':
+          description: Não autorizado.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  logError:
+                    type: boolean
+                  status:
+                    type: number
+                  error:
+                    type: string            
 
 components:
   schemas:
@@ -68,6 +115,13 @@ components:
         role: 
           type: number
         name: 
+          type: string
+    userAuth: 
+      type: object
+      properties: 
+        email:
+          type: string
+        password:
           type: string
           
   requestBodies:
