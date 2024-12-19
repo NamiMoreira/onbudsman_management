@@ -9,13 +9,178 @@ datasource db {
 }
 
 model User { 
-  id String @id @default (uuid())
-  name String
-  email String
-  password String
-  role Int
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now())
+  id            String       @id @default(uuid())
+  name          String
+  email         String
+  password      String
+  role          Int
+  created_at    DateTime @default(now())
+  updated_at    DateTime @default(now())
+
+  role_description Role_description @relation(fields: [role], references: [ id])
 
   @@map("user")
 }
+
+model Role_description{
+  id             Int     @id @default(autoincrement())  
+  name           String
+  created_at    DateTime @default(now())
+  updated_at    DateTime @default(now())
+
+  @@map ("role_description")
+  user User[]
+
+}
+
+
+
+
+model Occurrence{
+  id                  Int     @id @default(autoincrement())
+  reanalise           Boolean @default(false)
+  classificacao_id    Int
+  unidade_id          Int
+  descricao           String
+  cartao_beneficiario String
+  manifestacao_ant    String  @default("")
+  identificacao_id    Int     
+  forma_resposta_id   Int    
+  assunto_id          Int     
+  sub_assunto_id      Int     
+  nome                String
+  email               String
+  cpf                 String
+  telefone            String
+  tp_contrato_id      Int      @default(1)
+  tp_demandante_id    Int      @default(1)
+  canal_id            Int      
+  desmembrar          Boolean  @default(false)
+  status_id           Int      @default(1)
+  prazo_final         DateTime
+  prazo_interno       DateTime 
+  anexo               Boolean  @default(false)
+  receptor            Int?     
+  usuario_atualizacao Int      @default(1)
+  protocolo           String      @unique
+  created_at          DateTime @default(now())
+  updated_at          DateTime @default(now())
+  
+  @@map("occurrence")
+  identificacao_occurrence Identificacao_occurrence @relation(fields: [identificacao_id],  references: [ identificacao_id])
+  classificacao            Classificacao            @relation(fields: [classificacao_id],  references: [ classificacao_id])
+  unidade                  Unidade                  @relation(fields: [unidade_id],        references: [ unidade_id])
+  assunto                  Assunto                  @relation(fields: [assunto_id],        references: [ assunto_id])
+  sub_assunto              Sub_assunto              @relation(fields: [sub_assunto_id],    references: [ sub_assunto_id])
+  forma_resposta           Forma_resposta           @relation(fields: [forma_resposta_id], references: [ forma_resposta_id])
+  canal                    Canal                    @relation(fields: [canal_id],          references: [ canal_id])
+  tp_demandante            Tp_demandante            @relation(fields: [tp_demandante_id],  references: [ tp_demandante_id])
+  tp_contrato              Tp_contrato              @relation(fields: [tp_contrato_id],    references: [ tp_contrato_id])
+  status                   Status                   @relation(fields: [status_id],         references: [ status_id])
+
+  
+}
+
+model Identificacao_occurrence{ 
+  identificacao_id      Int          @id @default(autoincrement())
+  identificacao_nome    String
+  created_at            DateTime     @default(now())
+  updated_at            DateTime     @default(now())
+
+  @@map("identificacao_occurrence")
+  ocurrence Occurrence[]
+
+}
+
+model Classificacao {
+  classificacao_id      Int          @id @default(autoincrement())
+  classificacao_nome    String
+  created_at            DateTime     @default(now())
+  updated_at            DateTime     @default(now())
+
+  @@map ("classificacao")
+  ocurrence Occurrence[]
+}
+
+model Unidade {
+  unidade_id            Int          @id @default(autoincrement())
+  unidade_nome          String
+  created_at            DateTime     @default(now())
+  updated_at            DateTime     @default(now())
+
+  @@map ("unidade")
+  ocurrence Occurrence[]
+}
+
+
+model Assunto {
+  assunto_id            Int          @id @default(autoincrement())
+  assunto_nome          String
+  created_at            DateTime     @default(now())
+  updated_at            DateTime     @default(now())
+
+  @@map ("assunto")
+  ocurrence Occurrence[]
+}
+
+model Sub_assunto {
+  sub_assunto_id        Int          @id @default(autoincrement())
+  sub_assunto_nome     String
+  created_at            DateTime     @default(now())
+  updated_at            DateTime     @default(now())
+
+  @@map ("sub_assunto")
+  ocurrence Occurrence[]
+}
+
+model Forma_resposta {
+  forma_resposta_id     Int          @id @default(autoincrement())
+  resposta_nome         String
+  created_at            DateTime     @default(now())
+  updated_at            DateTime     @default(now())
+
+  @@map ("forma_resposta")
+  ocurrence Occurrence[]
+}
+
+model Canal {
+  canal_id              Int          @id @default(autoincrement())
+  canal_nome            String
+  created_at            DateTime     @default(now())
+  updated_at            DateTime     @default(now())
+
+  @@map ("canal")
+  ocurrence Occurrence[]
+}
+
+model Tp_demandante {
+  tp_demandante_id      Int          @id @default(autoincrement())
+  tp_demandante_nome    String
+  created_at            DateTime     @default(now())
+  updated_at            DateTime     @default(now())
+
+  @@map ("tp_demandante")
+  ocurrence Occurrence[]
+}
+
+model Tp_contrato {
+  tp_contrato_id        Int          @id @default(autoincrement())
+  tp_contrato_nome      String
+  created_at            DateTime     @default(now())
+  updated_at            DateTime     @default(now())
+
+  @@map ("tp_contrato")
+  ocurrence Occurrence[]
+}
+
+model Status {
+  status_id             Int          @id @default(autoincrement())
+  status_nome           String
+  created_at            DateTime     @default(now())
+  updated_at            DateTime     @default(now())
+
+  @@map ("status")
+  ocurrence Occurrence[]
+}
+
+
