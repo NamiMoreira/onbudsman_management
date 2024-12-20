@@ -13,4 +13,5 @@ router.post('/session', new AuthUserController().handle)
 
 router.post('/Ocurrence',isAuthenticated, new CreateOcurrenceController().handle)
 
+
 export {router};

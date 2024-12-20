@@ -1,5 +1,6 @@
 import { Response, Request } from "express";
 import { CreateOcurrenceService } from "../../services/occurrence/CreateOcurrenceService";
+import {SendEmail} from '../../SMTP/SendEmail'
 
 class CreateOcurrenceController {
   async handle(req: Request, res: Response) {
@@ -14,11 +15,23 @@ class CreateOcurrenceController {
     if (occurrence.logError == 1) {
       res.status(occurrence.status)
       return res.json(occurrence.error)
-    }
-    
-    
+    }    
 
-    return res.json({occurrence});
+    const sendEmail = new SendEmail();
+
+    var dataEmail = [['ti.aziel@unimedpinda.com.br','ti.marcelo@unimedpinda.com.br','suporte10@unimedpinda.com.br'],
+                    {subject: 'Abertura de nova Ocorrencia de Ouvidoria',
+                     text : 'Informamos que foi aberto o processo para verificação da ouvidoria.'
+                    }]
+    
+    if (forma_resposta_id == 1) {   
+      dataEmail[0].push(email)
+      console.log(dataEmail[1].text); 
+    }
+
+    const emailSent = await sendEmail.execute(dataEmail)
+    return res.json(occurrence)
+    
   }
 }
 
