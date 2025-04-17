@@ -1,17 +1,19 @@
-import {Router} from 'express';
+import { Router } from "express";
 const router = Router();
+import multer from "multer";
 
-import {CreateUserController} from './controlers/user/CreateUserController'
-import {AuthUserController} from './controlers/user/AuthUserController'
-import { isAuthenticated } from './middlewares/isAuthenticated';
-import {CreateOcurrenceController} from './controlers/occurrence/CreateOcurrenceController'
+import { CreateUserController } from "./controlers/user/CreateUserController";
 
 
-router.post('/user', isAuthenticated, new CreateUserController().handle)
+import { CreateOcurrenceController } from "./controlers/occurrence/CreateOcurrenceController";
+import { UploadFileController } from "./controlers/upload/UploadFileController";
 
-router.post('/session', new AuthUserController().handle)
+import uploadConfig from "./config/multer";
+const upload = multer(uploadConfig.upload("./tmp"));
 
-router.post('/Ocurrence',isAuthenticated, new CreateOcurrenceController().handle)
 
+router.post("/Ocurrence",new CreateOcurrenceController().handle);
 
-export {router};
+router.post("/file", upload.single("file"), new UploadFileController().handle);
+
+export { router };

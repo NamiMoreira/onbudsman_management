@@ -5,15 +5,18 @@ import {SendEmail} from '../../SMTP/SendEmail'
 class CreateOcurrenceController {
   async handle(req: Request, res: Response) {
     const { reanalise,classificacao_id, unidade_id, descricao, cartao_beneficiario, manifestacao_ant, identificacao_id,forma_resposta_id,assunto_id, sub_assunto_id,nome, email, CPF, telefone,canal_id} = req.body;
-
+      
     
+   
 
     const createOcurrenceService = new CreateOcurrenceService();
 
     const occurrence = await createOcurrenceService.execute({ reanalise,classificacao_id, unidade_id, descricao, cartao_beneficiario, manifestacao_ant, identificacao_id,forma_resposta_id,assunto_id, sub_assunto_id,nome, email, CPF, telefone,canal_id });
-
+     // @ts-expect-error na linha anterior.
     if (occurrence.logError == 1) {
+      // @ts-expect-error na linha anterior.
       res.status(occurrence.status)
+      // @ts-expect-error na linha anterior.
       return res.json(occurrence.error)
     }    
 
@@ -24,15 +27,17 @@ class CreateOcurrenceController {
                      text : 'Informamos que foi aberto o processo para verificação da ouvidoria.'
                     }]
     
-    if (forma_resposta_id == 1) {   
+    if (forma_resposta_id == 1) { 
+      // @ts-expect-error na linha anterior.  
       dataEmail[0].push(email)
+      // @ts-expect-error na linha anterior.
       console.log(dataEmail[1].text); 
     }
 
     const emailSent = await sendEmail.execute(dataEmail)
     return res.json(occurrence)
-    
   }
+  
 }
 
 export { CreateOcurrenceController };

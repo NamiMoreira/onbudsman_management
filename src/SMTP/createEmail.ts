@@ -8,10 +8,10 @@ class email{
     text: string;
     toEmail: string;
     
-    constructor(dataEmail,element){
+    constructor(dataEmail,toEmail){
         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         this.from =  'suporte10@unimedpinda.com.br',
-        this.to = element,
+        this.to = toEmail,
         this.subject = dataEmail[1].subject,
         this.text = dataEmail[1].text
     }

@@ -8,34 +8,6 @@ datasource db {
     url = env("DATABASE_URL")
 }
 
-model User { 
-  id            String       @id @default(uuid())
-  name          String
-  email         String
-  password      String
-  role          Int
-  created_at    DateTime @default(now())
-  updated_at    DateTime @default(now())
-
-  role_description Role_description @relation(fields: [role], references: [ id])
-
-  @@map("user")
-}
-
-model Role_description{
-  id             Int     @id @default(autoincrement())  
-  name           String
-  created_at    DateTime @default(now())
-  updated_at    DateTime @default(now())
-
-  @@map ("role_description")
-  user User[]
-
-}
-
-
-
-
 model Occurrence{
   id                  Int     @id @default(autoincrement())
   reanalise           Boolean @default(false)
